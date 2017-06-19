@@ -12,8 +12,6 @@ import javax.persistence.Id;
 @Entity
 public class Booking {
 
-    // by marking field with @Id we tell spring that
-    // we will use it as primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

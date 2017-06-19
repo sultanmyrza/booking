@@ -29,8 +29,6 @@ public class DatabaseFixture implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        System.out.println("DatabaseFixture.run");
-
         List<Booking> bookings = new ArrayList<>();
         Booking newBooking;
 

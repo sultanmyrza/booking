@@ -43,15 +43,15 @@ public class BookingMachine {
 
     public HashMap<String, String> book() {
 
-        System.out.println("BookingMachine.book");
         response = currentState.book();
+
         return response;
     }
 
     public HashMap<String, String> cancel() {
 
-        System.out.println("BookingMachine.cancel");
         response = currentState.cancel();
+
         return response;
     }
 }

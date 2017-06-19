@@ -21,8 +21,6 @@ public class BookedState implements BookingState {
     @Override
     public HashMap<String, String> book() {
 
-        System.out.println("BookedState.book");
-
         response.put("status", "error");
         response.put("info", "Can't book! Already booked");
 
@@ -32,11 +30,8 @@ public class BookedState implements BookingState {
     @Override
     public HashMap<String, String> cancel() {
 
-        System.out.println("BookedState.cancel");
-
         response.put("status", "success");
         response.put("info", "Can cancel");
-        // TODO: 17. 5. 30 Change state to canceled [DONE]
         bookingMachine.setCurrentState(bookingMachine.getCanceledState());
 
         return response;
