@@ -1,7 +1,9 @@
 package com.sultanmyrza.booking.service;
 
 import com.sultanmyrza.booking.model.Booking;
+import com.sultanmyrza.booking.model.Customer;
 import com.sultanmyrza.booking.repository.BookingRepository;
+import com.sultanmyrza.booking.repository.CustomerRepository;
 import com.sultanmyrza.booking.service.statePattern.BookingMachine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.List;
 public class BookingService {
 
     @Autowired
+    CustomerRepository customerRepository;
+
+    @Autowired
     private BookingRepository bookingRepository;
 
     private HashMap<String, String> response = new HashMap<>();
@@ -30,10 +35,11 @@ public class BookingService {
         return bookings;
     }
 
-    public HashMap<String, String> addBooking(Booking newBooking) {
+    public HashMap<String, String> addBooking(Integer customerId, Booking newBooking) {
 
         try {
-
+            Customer customer = customerRepository.findOne(customerId);
+            newBooking.setCustomer(customer);
             bookingRepository.save(newBooking);
             response.put("status", "success");
             response.put("info", "succesfully added new booking");

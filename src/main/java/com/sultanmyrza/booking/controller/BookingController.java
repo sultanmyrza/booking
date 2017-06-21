@@ -26,11 +26,12 @@ public class BookingController {
     }
 
 
-    @RequestMapping(value = "/booking/add", method = RequestMethod.POST)
-    public HashMap<String, String> addBooking(@RequestBody Booking newBooking) {
+    @RequestMapping(value = "customer/{customerId}/booking/add", method = RequestMethod.POST)
+    public HashMap<String, String> addBooking(@PathVariable Integer customerId,
+                                              @RequestBody Booking newBooking) {
 
         HashMap<String, String> response;
-        response = bookingService.addBooking(newBooking);
+        response = bookingService.addBooking(customerId, newBooking);
 
         return response;
     }

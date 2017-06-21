@@ -1,9 +1,6 @@
 package com.sultanmyrza.booking.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by sultanmyrza on 17. 5. 29.
@@ -16,6 +13,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String state;
+
+    @ManyToOne()
+    private Customer customer;
 
     public Booking() {
     }
@@ -34,5 +34,13 @@ public class Booking {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }
