@@ -26,35 +26,37 @@ public class BookingController {
     }
 
 
-    @RequestMapping(value = "customer/{customerId}/booking/add", method = RequestMethod.POST)
-    public HashMap<String, String> addBooking(@PathVariable Integer customerId,
+    @RequestMapping(value = "customer/id/{customerId}/booking/add", method = RequestMethod.POST)
+    public Booking addBooking(@PathVariable Integer customerId,
                                               @RequestBody Booking newBooking) {
 
-        HashMap<String, String> response;
-        response = bookingService.addBooking(customerId, newBooking);
-
-        return response;
+        // TODO: add logic for error handling
+        return bookingService.addBooking(customerId, newBooking);
     }
 
 
-    @RequestMapping(value = "/booking/update/{bookingId}", method = RequestMethod.PUT)
-    public HashMap<String, String> updateBooking(@PathVariable Integer bookingId,
-                                                 @RequestBody Booking updatedBooking) {
-
-        HashMap<String, String> response;
-        response = bookingService.updateBooking(bookingId, updatedBooking);
-
-        return response;
+    @RequestMapping(value = "/booking/id/{bookingId}/update", method = RequestMethod.PUT)
+    public Booking updateBooking(@PathVariable Integer bookingId,
+                                 @RequestBody Booking updatedBooking) {
+        /**
+         * return null if can not update
+         * must return error message that can not update
+         */
+        // TODO: add logic for error handling
+        // TODO: add response for error
+        updatedBooking = bookingService.updateBooking(bookingId, updatedBooking);
+        return updatedBooking;
     }
 
 
-    @RequestMapping(value = "/booking/delete/{bookingId}", method = RequestMethod.DELETE)
-    public HashMap<String, String> deleteBooking(@PathVariable Integer bookingId) {
+    @RequestMapping(value = "/booking/id/{bookingId}/delete", method = RequestMethod.DELETE)
+    public Booking deleteBooking(@PathVariable Integer bookingId) {
 
-        HashMap<String, String> response;
-        response = bookingService.deleteBooking(bookingId);
+        //  TODO: return proper response when delete same booking 2 times
+        Booking deletedBooking = bookingService.deleteBooking(bookingId);
 
-        return response;
+        // TODO: use adapter and return booking with customer (normally customer is @json ignored)
+        return deletedBooking;
     }
 
     @RequestMapping(value = "/bookings/state/{bookingState}", method = RequestMethod.GET)

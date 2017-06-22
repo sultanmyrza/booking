@@ -4,7 +4,7 @@ import com.sultanmyrza.booking.model.Booking;
 import com.sultanmyrza.booking.model.Customer;
 import com.sultanmyrza.booking.repository.BookingRepository;
 import com.sultanmyrza.booking.repository.CustomerRepository;
-import com.sultanmyrza.booking.service.statePattern.BookingMachine;
+import com.sultanmyrza.booking.service.statePattern.BookingStateMachine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,81 +35,56 @@ public class BookingService {
         return bookings;
     }
 
-    public HashMap<String, String> addBooking(Integer customerId, Booking newBooking) {
+    public Booking addBooking(Integer customerId, Booking newBooking) {
 
-        try {
-            Customer customer = customerRepository.findOne(customerId);
-            newBooking.setCustomer(customer);
-            bookingRepository.save(newBooking);
-            response.put("status", "success");
-            response.put("info", "succesfully added new booking");
-        }
-        catch (Exception e) {
+        // TODO: if user not exist return detailed error
+        // TODO: UNITTEST add booking
+        // this method add booking with null user if user
+        // not exist but must return error that user not exist
+        // which layer user existance should be checked?
+        Customer customer = customerRepository.findOne(customerId);
+        newBooking.setCustomer(customer);
+        bookingRepository.save(newBooking);
 
-            response.put("status", "error");
-            response.put("info", e.toString());
-        }
-        finally {
-
-            return response;
-        }
+        return newBooking;
     }
 
-    public HashMap<String, String> updateBooking(Integer bookingId, Booking updatedBooking) {
+    // TODO: refactor update Booking further
+    public Booking updateBooking(Integer bookingId, Booking updatedBooking) {
 
-        try {
+        Booking booking = bookingRepository.findOne(bookingId);
 
-            Booking booking = bookingRepository.findOne(bookingId);
+        // TODO: refactor state updating logic
+        String initialState = booking.getState();
+        String newState = updatedBooking.getState();
 
-            String initialState = booking.getState();
-            String newState = updatedBooking.getState();
+        BookingStateMachine bookingStateMachine = new BookingStateMachine(initialState);
 
-            BookingMachine bookingMachine = new BookingMachine(initialState);
-
-            if (newState.equals("booked")) {
-                response = bookingMachine.book();
-            }
-
-            if (newState.equals("canceled")) {
-                response = bookingMachine.cancel();
-            }
-
-            if (response.get("status").equals("success")) {
-
-                booking.setState(updatedBooking.getState());
-                bookingRepository.save(booking);
-                response.put("info", "booking successfully updated");
-            }
+        if (newState.equals("booked")) {
+            response = bookingStateMachine.book();
         }
-        catch (Exception e) {
 
-            response.put("status", "error");
-            response.put("info", e.toString());
+        if (newState.equals("canceled")) {
+            response = bookingStateMachine.cancel();
         }
-        finally {
 
-            return response;
+        if (response.get("status").equals("success")) {
+
+            booking.setState(updatedBooking.getState());
+            bookingRepository.save(booking);
+
+            return booking;
         }
+
+        return null;
     }
 
-    public HashMap<String, String> deleteBooking(Integer bookingId) {
+    public Booking deleteBooking(Integer bookingId) {
 
+        Booking booking = bookingRepository.findOne(bookingId);
+        bookingRepository.delete(booking);
 
-        try {
-
-            bookingRepository.delete(bookingId);
-            response.put("status", "success");
-            response.put("info", "booking deleted id: " + bookingId);
-        }
-        catch (Exception e) {
-
-            response.put("status", "error");
-            response.put("info", e.toString());
-        }
-        finally {
-
-            return response;
-        }
+        return booking;
     }
 
     public List<Booking> findByState(String state) {

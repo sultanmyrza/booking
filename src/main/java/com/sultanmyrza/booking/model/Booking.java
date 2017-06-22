@@ -1,5 +1,7 @@
 package com.sultanmyrza.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -14,7 +16,8 @@ public class Booking {
     private Integer id;
     private String state;
 
-    @ManyToOne()
+    @JsonIgnore
+    @ManyToOne
     private Customer customer;
 
     public Booking() {

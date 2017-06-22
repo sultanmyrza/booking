@@ -2,6 +2,7 @@ package com.sultanmyrza.booking.service;
 
 import com.sultanmyrza.booking.model.Booking;
 import com.sultanmyrza.booking.model.Customer;
+import com.sultanmyrza.booking.repository.BookingRepository;
 import com.sultanmyrza.booking.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
     private HashMap<String, String> response = new HashMap<>();
 
     public List<Customer> getAllCustomers() {
@@ -29,69 +33,43 @@ public class CustomerService {
         return customers;
     }
 
-    public HashMap<String, String> addCustomer(Customer newCustomer) {
+    public Customer addCustomer(Customer newCustomer) {
 
-        try {
-
-            customerRepository.save(newCustomer);
-            response.put("status", "success");
-            response.put("info", "succesfully added new customer");
-        }
-        catch (Exception e) {
-
-            response.put("status", "error");
-            response.put("info", e.toString());
-        }
-        finally {
-
-            return response;
-        }
+        // TODO: add error handling
+        customerRepository.save(newCustomer);
+        return newCustomer;
     }
 
-    public HashMap<String, String> updateCustomer(Integer customerId, Customer updatedCustomer) {
+    public Customer updateCustomer(Integer customerId, Customer updatedCustomer) {
 
-        try {
-            Customer customer = customerRepository.findOne(customerId);
+        Customer customer = customerRepository.findOne(customerId);
 
-            customer.setFirstName(updatedCustomer.getFirstName());
-            customer.setLastName(updatedCustomer.getLastName());
-            customerRepository.save(customer);
-            response.put("info", "customer successfully updated");
-        }
-        catch (Exception e) {
+        customer.setFirstName(updatedCustomer.getFirstName());
+        customer.setLastName(updatedCustomer.getLastName());
 
-            response.put("status", "error");
-            response.put("info", e.toString());
-        }
-        finally {
+        customerRepository.save(customer);
 
-            return response;
-        }
+        return  customer;
     }
 
-    public HashMap<String, String> deleteCustomer(Integer customerId) {
+    public Customer deleteCustomer(Integer customerId) {
 
-
-        try {
-
-            customerRepository.delete(customerId);
-            response.put("status", "success");
-            response.put("info", "customer deleted id: " + customerId);
+        // TODO: return customer with bookings
+        Customer customer = customerRepository.findOne(customerId);
+        List<Booking> customerBookings = customer.getBookings();
+        for (Booking booking : customerBookings) {
+            bookingRepository.delete(booking);
         }
-        catch (Exception e) {
+        // TODO-ASK: add transactional here? if during deletion of customer bookings something goes wrong
+        customerRepository.delete(customerId);
 
-            response.put("status", "error");
-            response.put("info", e.toString());
-        }
-        finally {
-
-            return response;
-        }
+        return customer;
     }
 
     public List<Booking> getCustomerBookings(Integer customerId) {
 
         // TODO: wrap to try catch ask best practices Christopher
+        // TODO-ASK: What can we unittest here?
         Customer customer = customerRepository.findOne(customerId);
 
         return customer.getBookings();

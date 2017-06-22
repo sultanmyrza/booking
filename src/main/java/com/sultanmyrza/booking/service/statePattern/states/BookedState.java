@@ -1,6 +1,6 @@
 package com.sultanmyrza.booking.service.statePattern.states;
 
-import com.sultanmyrza.booking.service.statePattern.BookingMachine;
+import com.sultanmyrza.booking.service.statePattern.BookingStateMachine;
 import com.sultanmyrza.booking.service.statePattern.BookingState;
 
 import java.util.HashMap;
@@ -10,11 +10,11 @@ import java.util.HashMap;
  */
 public class BookedState implements BookingState {
 
-    private BookingMachine bookingMachine;
+    private BookingStateMachine bookingStateMachine;
     private HashMap<String, String> response;
 
-    public BookedState(BookingMachine bookingMachine) {
-        this.bookingMachine = bookingMachine;
+    public BookedState(BookingStateMachine bookingStateMachine) {
+        this.bookingStateMachine = bookingStateMachine;
         response = new HashMap<>();
     }
 
@@ -32,7 +32,7 @@ public class BookedState implements BookingState {
 
         response.put("status", "success");
         response.put("info", "Can cancel");
-        bookingMachine.setCurrentState(bookingMachine.getCanceledState());
+        bookingStateMachine.setCurrentState(bookingStateMachine.getCanceledState());
 
         return response;
     }

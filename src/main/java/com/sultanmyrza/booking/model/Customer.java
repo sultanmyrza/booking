@@ -19,15 +19,9 @@ public class Customer {
     private String firstName;
     private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany()
     @JoinColumn(name = "customer_id")
     private List<Booking> bookings = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "customers")
-    private List<Community> communities = new ArrayList<>();
-
-    @ManyToMany
-    private List<Community> test = new ArrayList<>();
 
     public Customer() {
     }
@@ -59,14 +53,5 @@ public class Customer {
     @JsonIgnore
     public List<Booking> getBookings() {
         return bookings;
-    }
-
-    @JsonIgnore
-    public List<Community> getCommunities() {
-        return communities;
-    }
-
-    public void addCommunity(Community newCommunity) {
-        this.communities.add(newCommunity);
     }
 }

@@ -25,39 +25,33 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
-    @RequestMapping(value = "/customer/{customerId}/bookings", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/id/{customerId}/bookings", method = RequestMethod.GET)
     public List<Booking> getCustomerBookings(@PathVariable Integer customerId) {
 
         return customerService.getCustomerBookings(customerId);
     }
 
     @RequestMapping(value = "/customer/add", method = RequestMethod.POST)
-    public HashMap<String, String> addCustomer(@RequestBody Customer newCustomer) {
+    public Customer addCustomer(@RequestBody Customer newCustomer) {
 
-        HashMap<String, String> response;
-        response = customerService.addCustomer(newCustomer);
+        // TODO: add logic for error handling
+        return customerService.addCustomer(newCustomer);
 
-        return response;
     }
 
-
-    @RequestMapping(value = "/customer/update/{customerId}", method = RequestMethod.PUT)
-    public HashMap<String, String> updateCustomer(@PathVariable Integer customerId,
+    @RequestMapping(value = "/customer/id/{customerId}/update", method = RequestMethod.PUT)
+    public Customer updateCustomer(@PathVariable Integer customerId,
                                                  @RequestBody Customer updatedCustomer) {
 
-        HashMap<String, String> response;
-        response = customerService.updateCustomer(customerId, updatedCustomer);
-
-        return response;
+        // TODO: add logic for error handling
+        return customerService.updateCustomer(customerId, updatedCustomer);
     }
 
 
-    @RequestMapping(value = "/customer/delete/{customerId}", method = RequestMethod.DELETE)
-    public HashMap<String, String> deleteCustomer(@PathVariable Integer customerId) {
+    @RequestMapping(value = "/customer/id/{customerId}/delete", method = RequestMethod.DELETE)
+    public Customer deleteCustomer(@PathVariable Integer customerId) {
 
-        HashMap<String, String> response;
-        response = customerService.deleteCustomer(customerId);
-
-        return response;
+        // TODO: add logic for error handling for example non-existing id
+        return customerService.deleteCustomer(customerId);
     }
 }

@@ -8,7 +8,7 @@ import java.util.HashMap;
 /**
  * Created by sultanmyrza on 17. 5. 30.
  */
-public class BookingMachine {
+public class BookingStateMachine {
 
     private BookingState bookedState;
     private BookingState canceledState;
@@ -16,7 +16,10 @@ public class BookingMachine {
 
     private HashMap<String, String> response;
 
-    public BookingMachine(String initialState) {
+    // TODO: add canUpdateState which return True if can update
+    // TODO: rafactor state to ENUMS
+
+    public BookingStateMachine(String initialState) {
 
         bookedState = new BookedState(this);
         canceledState = new CanceledState(this);
