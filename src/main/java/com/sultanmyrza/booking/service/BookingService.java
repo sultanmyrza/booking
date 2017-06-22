@@ -43,6 +43,13 @@ public class BookingService {
         // not exist but must return error that user not exist
         // which layer user existance should be checked?
         Customer customer = customerRepository.findOne(customerId);
+        if (customer == null) {
+            System.out.println("Creating new user");
+            // TODO: redirect to add new user or something
+            customer = new Customer();
+            customer.setFirstName("New First name");
+            customer.setLastName("New Last name");
+        }
         newBooking.setCustomer(customer);
         bookingRepository.save(newBooking);
 
@@ -58,6 +65,7 @@ public class BookingService {
         String initialState = booking.getState();
         String newState = updatedBooking.getState();
 
+        // TODO-ASK: where we check BookingStateMachine
         BookingStateMachine bookingStateMachine = new BookingStateMachine(initialState);
 
         if (newState.equals("booked")) {
@@ -81,6 +89,7 @@ public class BookingService {
 
     public Booking deleteBooking(Integer bookingId) {
 
+        // TODO-ASK: how we handle if we did not find booking or if user enter non-existing id
         Booking booking = bookingRepository.findOne(bookingId);
         bookingRepository.delete(booking);
 

@@ -57,8 +57,15 @@ public class CustomerService {
         // TODO: return customer with bookings
         Customer customer = customerRepository.findOne(customerId);
         List<Booking> customerBookings = customer.getBookings();
-        for (Booking booking : customerBookings) {
-            bookingRepository.delete(booking);
+
+        //for (Booking booking : customerBookings) {
+//            bookingRepository.delete(booking.getId());
+//            // customerBookings.remove(booking);
+//            // https://stackoverflow.com/questions/8189466/why-am-i-not-getting-a-java-util-concurrentmodificationexception-in-this-example
+//        }
+        for (int i = customerBookings.size() - 1; i >= 0; i--) {
+            bookingRepository.delete(customerBookings.get(i));
+            customerBookings.remove(i);
         }
         // TODO-ASK: add transactional here? if during deletion of customer bookings something goes wrong
         customerRepository.delete(customerId);
