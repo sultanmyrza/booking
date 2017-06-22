@@ -55,7 +55,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void updateBooking_BookingStateMachineChangeStateFromBookedToCanceled() throws Exception {
+    public void updateBooking_BookingStateMachineStateChange() throws Exception {
 
         Booking oldBooking = new Booking();
         // TODO: change state to ENUMs
@@ -69,8 +69,10 @@ public class BookingServiceTest {
 
         Booking returnedBooking = bookingService.updateBooking(anyInt(), updatedBooking);
 
+
+        assertEquals(updatedBooking.getState(), returnedBooking.getState());
         assertNotNull(returnedBooking);
 
-
+        // TODO-ASK: is it better to check "from canceled to booked" here? or in another method
     }
 }
