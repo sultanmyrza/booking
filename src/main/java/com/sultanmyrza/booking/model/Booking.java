@@ -20,6 +20,9 @@ public class Booking {
     @ManyToOne
     private Customer customer;
 
+    @Version
+    private Integer version;
+
     public Booking() {
     }
 
@@ -45,5 +48,13 @@ public class Booking {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

@@ -23,6 +23,9 @@ public class Customer {
     @JoinColumn(name = "customer_id")
     private List<Booking> bookings = new ArrayList<>();
 
+    @Version
+    private Integer version;
+
     public Customer() {
     }
 
@@ -57,5 +60,13 @@ public class Customer {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
